@@ -28,6 +28,7 @@ namespace HrAPI.Models
         public string Phone { get; set; }
         public string RelevantPhone { get; set; }
         public string Email { get; set; }
+        public string photo { get; set; }
         public  DateTime HiringDateHiringDate { get; set; }
     }
 }

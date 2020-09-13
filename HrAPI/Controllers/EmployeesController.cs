@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HrAPI.Models;
 using HrAPI.DTO;
+using HrAPI.ViewModels;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using System.Net.Http;
 
 namespace HrAPI.Controllers
 {
@@ -15,7 +20,7 @@ namespace HrAPI.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
+        private readonly IHostingEnvironment hostingEnvironment;
         public EmployeesController(ApplicationDbContext context)
         {
             _context = context;
@@ -40,7 +45,8 @@ namespace HrAPI.Controllers
                 HiringDateHiringDate = e.HiringDateHiringDate,
                 MaritalStatus = e.MaritalStatus,
                 Phone = e.Phone,
-                RelevantPhone = e.RelevantPhone
+                RelevantPhone = e.RelevantPhone,
+                Photo=e.photo
             }).ToList();
             return emps;
         }
@@ -97,6 +103,7 @@ namespace HrAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
+
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
@@ -123,5 +130,41 @@ namespace HrAPI.Controllers
         {
             return _context.Employees.Any(e => e.ID == id);
         }
+        [HttpPost]
+        [Route("api/dashboard/UploadImage")]
+        public ActionResult UploadImage(IFormFile file)
+        {
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", file.FileName);
+            using (Stream stream=new FileStream(path,FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
+        [HttpGet]
+        [Route("getImage/{ImageName}")]
+        public IActionResult ImageGet(string ImageName)
+        {
+            //ImageName = "#6M@CX79)G77LT&9F&G8^P0XYA2^YNE9J2GO^WCA.jpg";
+            if (ImageName == null)
+                return Content("filename not present");
+
+            var path = Path.Combine(
+                           Directory.GetCurrentDirectory(),
+                           "wwwroot/images", ImageName);
+
+            var memory = new MemoryStream();
+            var ext = System.IO.Path.GetExtension(path);
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                 stream.CopyTo(memory);
+            }
+            memory.Position = 0;
+            var contentType = "APPLICATION/octet-stream";
+            return File(memory, contentType, Path.GetFileName(path));
+        }
+
     }
 }
