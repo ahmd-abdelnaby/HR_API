@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ADMIN\\source\\repos\\HrAPI\\HrAPI\\HrAPI.csproj": {}
+    "D:\\HR Main\\HrAPI\\HrAPI\\HrAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ADMIN\\source\\repos\\HrAPI\\HrAPI\\HrAPI.csproj": {
+    "D:\\HR Main\\HrAPI\\HrAPI\\HrAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ADMIN\\source\\repos\\HrAPI\\HrAPI\\HrAPI.csproj",
+        "projectUniqueName": "D:\\HR Main\\HrAPI\\HrAPI\\HrAPI.csproj",
         "projectName": "HrAPI",
-        "projectPath": "C:\\Users\\ADMIN\\source\\repos\\HrAPI\\HrAPI\\HrAPI.csproj",
+        "projectPath": "D:\\HR Main\\HrAPI\\HrAPI\\HrAPI.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ADMIN\\source\\repos\\HrAPI\\HrAPI\\obj\\",
+        "outputPath": "D:\\HR Main\\HrAPI\\HrAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,6 +38,10 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "Microsoft.AspNet.Identity.Core": {
+              "target": "Package",
+              "version": "[2.2.3, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[3.1.7, )"
@@ -56,17 +60,17 @@
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[3.1.8, )"
             },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[3.1.8, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[3.1.8, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -20,7 +21,11 @@ namespace HrAPI.Models
         [ForeignKey("EmployeeID")]
         public virtual Employee Employee { get; set; }
         public DateTime Date { get; set; }
-        public DateTime Arrival { get; set; }
+        public string Time { get; set; }
+        public string email { get; set; }
+        public int Hours { get; set; }
+
+        public bool Approved { get; set; }
         [AllowNull]
         public string  Comment { get; set; }
     }
