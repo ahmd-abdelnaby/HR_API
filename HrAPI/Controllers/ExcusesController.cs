@@ -9,9 +9,14 @@ using HrAPI.Models;
 using System.Security.Claims;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using HrAPI.DTO;
 
 namespace HrAPI.Controllers
 {
+    [Authorize(AuthenticationSchemes =
+    JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class ExcusesController : ControllerBase
@@ -33,9 +38,17 @@ namespace HrAPI.Controllers
 
         // GET: api/Excuses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Excuse>>> GetExcuses()
+        public async Task<ActionResult<IEnumerable<ExcuseDTO>>> GetExcuses()
         {
-            return await _context.Excuses.ToListAsync();
+            return await _context.Excuses.Select(ex=>new ExcuseDTO { 
+                Approved=ex.Approved,
+                Comment=ex.Comment,
+                Date=ex.Date,
+                Profession=ex.Employee.Profession.Name,
+                EmployeeName=ex.Employee.Name,
+                Hours=ex.Hours,
+                Time=ex.Time
+            }).ToListAsync();
         }
 
         // GET: api/Excuses/5
@@ -83,6 +96,7 @@ namespace HrAPI.Controllers
 
             return NoContent();
         }
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
 
         // POST: api/Excuses
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -90,16 +104,9 @@ namespace HrAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Excuse>> PostExcuse(Excuse excuse)
         {
-            //System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            //var id = userManager.GetUserId(User);
-            //var user = await userManager.GetUserAsync(HttpContext.User);
-            ///var claims = ClaimsPrincipal.Current.Identities.First().Claims.ToList();
-            //var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
-            //var id = excuse.UserID;
-            //id = id + "";
-            //var user = userManager.GetUserId()
-
-            var emp = _context.Employees.Where(e => e.Email == excuse.email).FirstOrDefault();
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value; 
+            var emp = _context.Employees.Where(e => e.Email == email).FirstOrDefault();
             excuse.Employee = emp;
             excuse.EmployeeID = emp.ID;
             

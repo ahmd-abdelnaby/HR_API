@@ -22,7 +22,6 @@ namespace HrAPI.Models
         public virtual Employee Employee { get; set; }
         public DateTime Date { get; set; }
         public string Time { get; set; }
-        public string email { get; set; }
         public int Hours { get; set; }
 
         public bool Approved { get; set; }
