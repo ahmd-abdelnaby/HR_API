@@ -14,7 +14,7 @@ namespace HrAPI.DTO
         public int Hours { get; set; }
 
         public string Profession { get; set; }
-        public bool Approved { get; set; }
+        public string Approved { get; set; }
      
         public string Comment { get; set; }
     }

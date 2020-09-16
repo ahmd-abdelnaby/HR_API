@@ -24,7 +24,7 @@ namespace HrAPI.Models
         public string Time { get; set; }
         public int Hours { get; set; }
 
-        public bool Approved { get; set; }
+        public string Approved { get; set; }
         [AllowNull]
         public string  Comment { get; set; }
     }

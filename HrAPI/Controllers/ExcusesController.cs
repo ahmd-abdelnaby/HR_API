@@ -41,6 +41,7 @@ namespace HrAPI.Controllers
         public async Task<ActionResult<IEnumerable<ExcuseDTO>>> GetExcuses()
         {
             return await _context.Excuses.Select(ex=>new ExcuseDTO { 
+                ID=ex.ID,
                 Approved=ex.Approved,
                 Comment=ex.Comment,
                 Date=ex.Date,
@@ -50,8 +51,101 @@ namespace HrAPI.Controllers
                 Time=ex.Time
             }).ToListAsync();
         }
+        [Route("ApprovedExcuses")]
+        public async Task<ActionResult<IEnumerable<ExcuseDTO>>> GetApprovedExcuses()
+        {
+            return await _context.Excuses.Where(ex => ex.Approved =="approved").Select(ex => new ExcuseDTO
+            {
+                ID = ex.ID,
+                Approved = ex.Approved,
+                Comment = ex.Comment,
+                Date = ex.Date,
+                Profession = ex.Employee.Profession.Name,
+                EmployeeName = ex.Employee.Name,
+                Hours = ex.Hours,
+                Time = ex.Time
+            }).ToListAsync();
+        }
+        [Route("DisApprovedExcuses")]
+        public async Task<ActionResult<IEnumerable<ExcuseDTO>>> GetDisApprovedExcuses()
+        {
+            return await _context.Excuses.Where(ex => ex.Approved == "disapproved").Select(ex => new ExcuseDTO
+            {
+                ID = ex.ID,
+                Approved = ex.Approved,
+                Comment = ex.Comment,
+                Date = ex.Date,
+                Profession = ex.Employee.Profession.Name,
+                EmployeeName = ex.Employee.Name,
+                Hours = ex.Hours,
+                Time = ex.Time
+            }).ToListAsync();
+        }
+        [Route("PendingExcuses")]
+        public async Task<ActionResult<IEnumerable<ExcuseDTO>>> GetPendingExcuses()
+        {
+            return await _context.Excuses.Where(ex => ex.Date >=DateTime.Now && ex.Approved== "pending").Select(ex => new ExcuseDTO
+            {
+                ID = ex.ID,
+                Approved = ex.Approved,
+                Comment = ex.Comment,
+                Date = ex.Date,
+                Profession = ex.Employee.Profession.Name,
+                EmployeeName = ex.Employee.Name,
+                Hours = ex.Hours,
+                Time = ex.Time
+            }).ToListAsync();
+        }
 
-        // GET: api/Excuses/5
+        //[HttpGet("{id}")]
+        [Route("AcceptExcuse/{id}")]
+        public ActionResult AcceptExcuse(int id)
+        {
+            var excuse = _context.Excuses.Find(id);
+
+            if (excuse == null)
+            {
+                return NotFound();
+            }
+            excuse.Approved = "approved";
+            _context.SaveChanges();
+            return Ok();
+        }
+        [Route("RejectExcuse/{id}")]
+        public ActionResult RejectExcuse(int id)
+        {
+            var excuse = _context.Excuses.Find(id);
+
+            if (excuse == null)
+            {
+                return NotFound();
+            }
+            excuse.Approved = "disapproved";
+            _context.SaveChanges();
+            return Ok();
+        }
+        [Route("PreviousExcuses")]
+        public async Task<ActionResult<IEnumerable<ExcuseDTO>>> PreviousExcuses()
+        {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var emp = _context.Employees.Where(e => e.Email == email).FirstOrDefault();
+            
+            return await _context.Excuses.Where(ex=>ex.Employee.Email==email).Select(ex => new ExcuseDTO
+            {
+                ID = ex.ID,
+                Approved = ex.Approved,
+                Comment = ex.Comment,
+                Date = ex.Date,
+                Profession = ex.Employee.Profession.Name,
+                EmployeeName = ex.Employee.Name,
+                Hours = ex.Hours,
+                Time = ex.Time
+            }).ToListAsync();
+            
+
+        }
+        //GET: api/Excuses/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Excuse>> GetExcuse(int id)
         {
