@@ -75,6 +75,7 @@ namespace HrAPI.Controllers
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     email = Useremail,
                     UserName = name,
+                    roles= userRoles,
                     expiration = token.ValidTo
                 }) ;
             }

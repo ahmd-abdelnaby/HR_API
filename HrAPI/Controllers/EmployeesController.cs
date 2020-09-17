@@ -53,16 +53,33 @@ namespace HrAPI.Controllers
 
         // GET: api/Employees/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public EmployeeDTO GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-
-            if (employee == null)
+            var ff =  _context.Employees.Include(e=>e.Profession).FirstOrDefault(e=>e.ID==id).Profession;
+            var e =  _context.Employees.FirstOrDefault(e=>e.ID == id);
+            var emp = new EmployeeDTO
             {
-                return NotFound();
+                ID = e.ID,
+                Name = e.Name,
+                Profession = e.Profession.Name,
+                GraduatioYear = e.GraduatioYear,
+                Address = e.Address,
+                Code = e.Code,
+                DateOfBirth = e.DateOfBirth,
+                Email = e.Email,
+                gender = e.gender,
+                HiringDateHiringDate = e.HiringDateHiringDate,
+                MaritalStatus = e.MaritalStatus,
+                Phone = e.Phone,
+                RelevantPhone = e.RelevantPhone,
+                Photo = e.photo
+            };
+            if (emp == null)
+            {
+                return null;
             }
 
-            return employee;
+            return emp;
         }
 
         // PUT: api/Employees/5
