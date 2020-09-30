@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace HrAPI
 {
@@ -27,6 +29,7 @@ namespace HrAPI
         [System.Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDirectoryBrowser();
             services.AddHttpContextAccessor();
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -34,7 +37,7 @@ namespace HrAPI
 
             // For Entity Framework  
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnStr")));
-
+            //services.AddScoped<IEmployee, EmployeeService>();
             // For Identity  
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -66,10 +69,24 @@ namespace HrAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
             app.UseCors(
-             options => options.WithOrigins("http://localhost:4200.com").AllowAnyMethod()
+             //options => options.WithOrigins("http://localhost:4200.com").AllowAnyMethod()
+             options=>options.AllowAnyOrigin().AllowAnyMethod()
            );
+            app.UseStaticFiles(); // For the wwwroot folder.
 
+           
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "wwwroot")),
+                RequestPath = "/wwwroot",
+                EnableDirectoryBrowsing = true
+            });
 
             app.UseRouting();
 

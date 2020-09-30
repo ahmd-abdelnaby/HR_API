@@ -158,6 +158,8 @@ C:\Users\ADMIN\source\repos\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\zh-Hans\Microsof
 C:\Users\ADMIN\source\repos\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\ADMIN\source\repos\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.csproj.CoreCompileInputs.cache
 C:\Users\ADMIN\source\repos\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.AssemblyInfoInputs.cache
+D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.AssemblyInfo.cs
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\appsettings.Development.json
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\appsettings.json
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
@@ -168,8 +170,6 @@ D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\HrAPI.runtimeconfig.dev.json
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\HrAPI.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\HrAPI.pdb
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
-D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
@@ -196,8 +196,6 @@ D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuratio
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
-D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
-D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
@@ -306,9 +304,6 @@ D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
-D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.csprojAssemblyReference.cache
-D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.AssemblyInfoInputs.cache
-D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.AssemblyInfo.cs
 D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.RazorTargetAssemblyInfo.cache
 D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.csproj.CopyComplete
 D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\staticwebassets\HrAPI.StaticWebAssets.Manifest.cache
@@ -316,6 +311,10 @@ D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\staticwebassets\HrAPI.StaticWebAs
 D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.dll
 D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.pdb
 D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.genruntimeconfig.cache
-D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNet.Identity.Core.dll
+D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll
+D:\HR Main\HrAPI\HrAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll
 D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.csproj.CoreCompileInputs.cache
 D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.MvcApplicationPartsAssemblyInfo.cache
+D:\HR Main\HrAPI\HrAPI\obj\Debug\netcoreapp3.1\HrAPI.csprojAssemblyReference.cache

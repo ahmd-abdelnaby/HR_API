@@ -17,6 +17,7 @@ namespace HrAPI.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public string Name { get; set; }
+        public string Position { get; set; }
         public string Code { get; set; }
         public int ProfessionID { get; set; }
         [ForeignKey("ProfessionID")]
@@ -31,5 +32,6 @@ namespace HrAPI.Models
         public string Email { get; set; }
         public string photo { get; set; }
         public  DateTime HiringDateHiringDate { get; set; }
+        public int AllowedLeaveDays { get; set; }
     }
 }

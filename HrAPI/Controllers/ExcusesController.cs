@@ -147,16 +147,28 @@ namespace HrAPI.Controllers
         }
         //GET: api/Excuses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Excuse>> GetExcuse(int id)
+        public async Task<ActionResult<ExcuseDTO>> GetExcuse(int id)
         {
-            var excuse = await _context.Excuses.FindAsync(id);
+            var ex = _context.Excuses.Include(e => e.Employee).ThenInclude(e => e.Profession)
+                .FirstOrDefault(e => e.ID == id);
 
-            if (excuse == null)
+            if (ex == null)
             {
                 return NotFound();
             }
+            ExcuseDTO excuseDTO = new ExcuseDTO
+            {
+                ID = ex.ID,
+                Approved = ex.Approved,
+                Comment = ex.Comment,
+                Date = ex.Date,
+                Profession = ex.Employee.Profession.Name,
+                EmployeeName = ex.Employee.Name,
+                Hours = ex.Hours,
+                Time = ex.Time
+            };
 
-            return excuse;
+            return excuseDTO;
         }
 
         // PUT: api/Excuses/5
@@ -170,6 +182,21 @@ namespace HrAPI.Controllers
                 return BadRequest();
             }
 
+            var Old = _context.Excuses.Include(e => e.Employee).ThenInclude(e => e.Profession)
+                 .FirstOrDefault(e => e.ID == id);
+            //Excuse NewExcuse = new Excuse
+            //{
+            //    Approved = Old.Approved,
+            //    Comment = Old.Comment,
+            //    Date = Old.Date,
+            //    Employee = Old.Employee,
+            //    EmployeeID = Old.EmployeeID,
+            //    Hours = Old.Hours,
+            //    Time = Old.Time
+            //};
+            excuse.EmployeeID = Old.EmployeeID;
+            excuse.Employee = Old.Employee;
+            _context.Entry(Old).State = EntityState.Detached;
             _context.Entry(excuse).State = EntityState.Modified;
 
             try
@@ -198,11 +225,14 @@ namespace HrAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Excuse>> PostExcuse(Excuse excuse)
         {
-            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value; 
-            var emp = _context.Employees.Where(e => e.Email == email).FirstOrDefault();
-            excuse.Employee = emp;
-            excuse.EmployeeID = emp.ID;
+            if(excuse.EmployeeID==0)
+            {
+                System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+                var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+                var emp = _context.Employees.Where(e => e.Email == email).FirstOrDefault();
+                excuse.Employee = emp;
+                excuse.EmployeeID = emp.ID;
+            }
             
             _context.Excuses.Add(excuse);
             await _context.SaveChangesAsync();

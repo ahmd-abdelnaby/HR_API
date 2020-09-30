@@ -12,19 +12,37 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using System.Net.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace HrAPI.Controllers
 {
+    [Authorize(AuthenticationSchemes =
+    JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        //private readonly EmployeeCore employeeCore;
         private readonly IHostingEnvironment hostingEnvironment;
-        public EmployeesController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> userManager;
+        //private readonly string email;
+        //private readonly Employee empCurrentUser;
+
+        public EmployeesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            this.userManager = userManager;
+            //System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            //email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            //empCurrentUser = _context.Employees.Where(e => e.Email == email).FirstOrDefault();
         }
+        private Task<ApplicationUser> GetCurrentUserAsync() => userManager.GetUserAsync(HttpContext.User);
+
 
         // GET: api/Employees
         [HttpGet]
@@ -55,8 +73,8 @@ namespace HrAPI.Controllers
         [HttpGet("{id}")]
         public EmployeeDTO GetEmployee(int id)
         {
-            var ff =  _context.Employees.Include(e=>e.Profession).FirstOrDefault(e=>e.ID==id).Profession;
-            var e =  _context.Employees.FirstOrDefault(e=>e.ID == id);
+            //var ff =  _context.Employees.Include(e=>e.Profession).FirstOrDefault(e=>e.ID==id).Profession;
+            var e =  _context.Employees.Include(e=>e.Profession).FirstOrDefault(e=>e.ID == id);
             var emp = new EmployeeDTO
             {
                 ID = e.ID,
@@ -149,17 +167,35 @@ namespace HrAPI.Controllers
         }
         [HttpPost]
         [Route("api/dashboard/UploadImage")]
-        public ActionResult UploadImage(IFormFile file)
+        public ActionResult UploadFile(IFormFile file)
         {
-
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", file.FileName);
-            using (Stream stream=new FileStream(path,FileMode.Create))
+            var ImagesTypes = new List<string>() { "image/jpg", "image/jpeg", "image/png" };
+            var FileTypes = new List<string>() { "application/pdf", "application/doc", "application/docs" };
+            //var user = GetCurrentUserAsync();
+            //var emp = _context.Employees.Where(e => e.Email == user.Result.Email).FirstOrDefault();
+            string path;
+            if (ImagesTypes.Contains(file.ContentType))
             {
-                file.CopyTo(stream);
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/", file.FileName);
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
             }
+            else if(FileTypes.Contains(file.ContentType))
+            {
+                path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/leaves/", file.FileName);
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+            }
+            
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("getImage/{ImageName}")]
         public IActionResult ImageGet(string ImageName)
@@ -181,6 +217,82 @@ namespace HrAPI.Controllers
             memory.Position = 0;
             var contentType = "APPLICATION/octet-stream";
             return File(memory, contentType, Path.GetFileName(path));
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getFile/{FName}")]
+        public IActionResult getFile(string FName)
+        {
+            //FName = "H4QV1OHX0A7H5ZQ1EEE4I004TMKRBF79XTZONS1J.jpg";
+            if (FName == null)
+                return Content("filename not present");
+
+            var path = Path.Combine(
+                           Directory.GetCurrentDirectory(),
+                           "wwwroot/leaves/", FName);
+
+            var memory = new MemoryStream();
+            var ext = System.IO.Path.GetExtension(path);
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                stream.CopyTo(memory);
+            }
+            memory.Position = 0;
+            var contentType = "APPLICATION/pdf";
+            //return File(Path.GetFileName(path), contentType, FName);
+            return File(memory, contentType, Path.GetFileName(path));
+        }
+
+        //for current user
+        [HttpGet]
+        [Route("EmployeeByProfession")]
+        public IEnumerable<EmployeeDTO> EmployeeByProfession()
+        {
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var empCurrentUser = _context.Employees.Where(e => e.Email == email).FirstOrDefault();
+            var emps = _context.Employees.Where(e=>e.ProfessionID== empCurrentUser.ProfessionID).Select(e => new EmployeeDTO
+            {
+                ID = e.ID,
+                Name = e.Name,
+                Profession = e.Profession.Name,
+                GraduatioYear = e.GraduatioYear,
+                Address = e.Address,
+                Code = e.Code,
+                DateOfBirth = e.DateOfBirth,
+                Email = e.Email,
+                gender = e.gender,
+                HiringDateHiringDate = e.HiringDateHiringDate,
+                MaritalStatus = e.MaritalStatus,
+                Phone = e.Phone,
+                RelevantPhone = e.RelevantPhone,
+                Photo = e.photo
+            }).ToList();
+            return emps;
+        }
+        [HttpGet]
+        [Route("GetAllEmployeesByProfession/{id}")]
+        public IEnumerable<EmployeeDTO> GetAllEmployeesByProfession(int id)
+        {
+            var emps = _context.Employees.Where(e => e.ProfessionID == id).Select(e => new EmployeeDTO
+            {
+                ID = e.ID,
+                Name = e.Name,
+                Profession = e.Profession.Name,
+                GraduatioYear = e.GraduatioYear,
+                Address = e.Address,
+                Code = e.Code,
+                DateOfBirth = e.DateOfBirth,
+                Email = e.Email,
+                gender = e.gender,
+                HiringDateHiringDate = e.HiringDateHiringDate,
+                MaritalStatus = e.MaritalStatus,
+                Phone = e.Phone,
+                RelevantPhone = e.RelevantPhone,
+                Photo = e.photo
+            }).ToList();
+            return emps;
         }
 
     }

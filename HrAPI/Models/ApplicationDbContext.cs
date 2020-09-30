@@ -20,6 +20,11 @@ namespace HrAPI.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            //builder.Entity<LeaveRequest>()
+            //.Property(e => e.LeavesFiles)
+            //.HasConversion(
+            //    v => string.Join(',', v),
+            //    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
         }
 
         public DbSet<Employee> Employees { get; set; }
@@ -31,9 +36,12 @@ namespace HrAPI.Models
         public DbSet<Events> Events { get; set; }
         public DbSet<Excuse> Excuses { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<LeavesTypes> LeavesTypes { get; set; }
         public DbSet<MissionRequest> MissionRequests { get; set; }
         public DbSet<NeedsRequest> NeedsRequests { get; set; }
         public DbSet<Profession> Professions { get; set; }
+        public DbSet<LeaveFiles> LeaveFiles { get; set; }
+        
     }
 
 
